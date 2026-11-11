@@ -7,7 +7,7 @@
 
 | # | Task | Depends on | Layer | Status |
 |---|---|---|---|---|
-| 01 | [Environment setup](01-environment-setup.md) | — | Setup | 🔄 In progress |
+| 01 | [Environment setup](01-environment-setup.md) | — | Setup | 🟡 Awaiting merge |
 | 02 | [Backend solution scaffold & cross-cutting setup](02-backend-scaffold.md) | 01 | Backend | ☐ Not started |
 | 03 | [Database: entities, DbContext, migrations](03-database-entities.md) | 02 | Backend | ☐ Not started |
 | 04 | [Authentication API](04-auth-api.md) | 03 | Backend | ☐ Not started |
