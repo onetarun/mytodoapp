@@ -54,12 +54,7 @@
         <dd>{{ current.updatedAt | date: 'medium' }}</dd>
       </dl>
 
-      <section class="checklist" aria-labelledby="checklist-heading">
-        <h2 id="checklist-heading">Checklist</h2>
-        <p class="checklist-summary">
-          {{ current.subTaskCompleted }}/{{ current.subTaskTotal }} done
-        </p>
-      </section>
+      <app-task-checklist [taskId]="current.id" [subTasks]="current.subTasks" />
     </article>
   }
 }

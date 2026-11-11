@@ -63,17 +63,3 @@
 .description {
   white-space: pre-wrap;
 }
-
-.checklist {
-  margin-top: var(--app-space-4);
-
-  h2 {
-    font: var(--mat-sys-title-medium);
-    margin: 0 0 var(--app-space-1);
-  }
-}
-
-.checklist-summary {
-  margin: 0;
-  color: var(--mat-sys-on-surface-variant);
-}

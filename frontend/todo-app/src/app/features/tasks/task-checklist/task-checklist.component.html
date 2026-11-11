@@ -1,0 +1,103 @@
+<section class="checklist" aria-labelledby="checklist-heading">
+  <h2 id="checklist-heading">Checklist</h2>
+
+  <p class="progress-text" aria-live="polite">{{ doneCount() }} of {{ items().length }} done</p>
+  <mat-progress-bar
+    mode="determinate"
+    [value]="progressPercent()"
+    [attr.aria-label]="'Checklist progress: ' + doneCount() + ' of ' + items().length + ' done'"
+  />
+
+  @if (items().length > 0) {
+    <ul class="items" aria-label="Checklist items">
+      @for (item of items(); track item.id) {
+        <li class="item" [class.done]="item.isCompleted">
+          @if (editingId() === item.id) {
+            <form
+              class="edit-form"
+              [formGroup]="editForm"
+              (ngSubmit)="saveEdit(item)"
+              (keydown.escape)="cancelEdit()"
+              novalidate
+              [attr.aria-label]="'Rename ' + item.title"
+            >
+              <mat-form-field appearance="outline" class="item-field">
+                <mat-label>Item</mat-label>
+                <input
+                  #editInput
+                  matInput
+                  formControlName="title"
+                  [attr.maxlength]="maxLength"
+                  autocomplete="off"
+                  required
+                />
+                <mat-hint>Enter to save, Esc to cancel</mat-hint>
+                @if (editForm.controls.title.hasError('required')) {
+                  <mat-error>Item text is required.</mat-error>
+                } @else if (editForm.controls.title.hasError('server')) {
+                  <mat-error>{{ editForm.controls.title.getError('server') }}</mat-error>
+                }
+              </mat-form-field>
+              <button mat-flat-button type="submit" [disabled]="busyId() === item.id">Save</button>
+              <button mat-button type="button" (click)="cancelEdit()">Cancel</button>
+            </form>
+          } @else {
+            <mat-checkbox
+              [checked]="item.isCompleted"
+              [disabled]="busyId() === item.id"
+              [aria-label]="
+                (item.isCompleted ? 'Mark as not done: ' : 'Mark as done: ') + item.title
+              "
+              (change)="toggle(item)"
+            />
+            <span class="item-title">{{ item.title }}</span>
+            <button
+              mat-icon-button
+              type="button"
+              [attr.data-item-id]="item.id"
+              data-action="edit"
+              [attr.aria-label]="'Edit ' + item.title"
+              matTooltip="Edit"
+              [disabled]="busyId() === item.id"
+              (click)="startEdit(item)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              type="button"
+              [attr.aria-label]="'Delete ' + item.title"
+              matTooltip="Delete"
+              [disabled]="busyId() === item.id"
+              (click)="remove(item)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
+        </li>
+      }
+    </ul>
+  } @else {
+    <p class="empty">No checklist items yet.</p>
+  }
+
+  <form class="add-form" [formGroup]="addForm" (ngSubmit)="add()" novalidate aria-label="Add item">
+    <mat-form-field appearance="outline" class="item-field">
+      <mat-label>Add item</mat-label>
+      <input
+        #addInput
+        matInput
+        formControlName="title"
+        [attr.maxlength]="maxLength"
+        autocomplete="off"
+      />
+      <mat-hint>Press Enter to add</mat-hint>
+      @if (addForm.controls.title.hasError('required') && addForm.controls.title.touched) {
+        <mat-error>Item text is required.</mat-error>
+      } @else if (addForm.controls.title.hasError('server')) {
+        <mat-error>{{ addForm.controls.title.getError('server') }}</mat-error>
+      }
+    </mat-form-field>
+    <button mat-stroked-button type="submit" [disabled]="adding()">Add</button>
+  </form>
+</section>
