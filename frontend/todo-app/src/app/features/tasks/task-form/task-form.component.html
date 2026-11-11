@@ -70,9 +70,10 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <!-- `null` means Uncategorized; the placeholder shows it because mat-select treats null as empty. -->
+      <mat-form-field appearance="outline" floatLabel="always">
         <mat-label>Category</mat-label>
-        <mat-select formControlName="categoryId">
+        <mat-select formControlName="categoryId" placeholder="Uncategorized">
           <mat-option [value]="null">Uncategorized</mat-option>
           @for (category of categories(); track category.id) {
             <mat-option [value]="category.id">{{ category.name }}</mat-option>
