@@ -27,23 +27,10 @@ public sealed class TaskService(AppDbContext dbContext, ICurrentUserService curr
             .ThenBy(t => t.DueDate == null)
             .ThenBy(t => t.DueDate)
             .ThenByDescending(t => t.CreatedAt)
-            .Select(t => new TaskListItemDto(
-                t.Id,
-                t.Title,
-                t.Priority,
-                t.CategoryId,
-                t.Category != null ? t.Category.Name : null,
-                t.DueDate,
-                t.IsCompleted,
-                false,
-                t.SubTasks.Count(s => !s.IsDeleted),
-                t.SubTasks.Count(s => !s.IsDeleted && s.IsCompleted)))
+            .Select(TaskProjections.ListItem)
             .ToListAsync(cancellationToken);
 
-        var utcNow = DateTime.UtcNow;
-        return items
-            .Select(item => item with { IsOverdue = TaskRules.IsOverdue(item.IsCompleted, item.DueDate, utcNow) })
-            .ToList();
+        return TaskProjections.WithOverdue(items, DateTime.UtcNow);
     }
 
     public async Task<TaskDetailDto?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
