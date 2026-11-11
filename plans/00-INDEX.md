@@ -12,7 +12,7 @@
 | 03 | [Database: entities, DbContext, migrations](03-database-entities.md) | 02 | Backend | ✅ Done |
 | 04 | [Authentication API](04-auth-api.md) | 03 | Backend | ✅ Done |
 | 05 | [Category API](05-category-api.md) | 04 | Backend | ✅ Done |
-| 06 | [Task API](06-task-api.md) | 05 | Backend | 🟡 Awaiting merge |
+| 06 | [Task API](06-task-api.md) | 05 | Backend | ✅ Done |
 | 07 | [SubTask API](07-subtask-api.md) | 06 | Backend | ☐ Not started |
 | 08 | [Dashboard & Notifications API](08-dashboard-notifications-api.md) | 07 | Backend | ☐ Not started |
 | 09 | [Backend test coverage gate](09-backend-test-coverage.md) | 08 | Backend | ☐ Not started |
