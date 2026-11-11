@@ -202,7 +202,7 @@ Angular                          API                                  SQL Server
 | Forms | Reactive Forms with validators that mirror the API rules |
 | State | Feature services with RxJS / signals. No NgRx (not needed at this scale) |
 | Routing | `/login`, `/register`, `/dashboard`, `/tasks`, `/tasks/:id`, `/categories`, protected by an auth guard |
-| UI kit | Lightweight; Angular Material or plain CSS for a minimal, responsive look (360–1920 px) |
+| UI kit | **Angular Material** (`@angular/material` + `@angular/cdk`, chosen by the client in Task 10) with a minimal, responsive look (360–1920 px) |
 | Accessibility | Labels on all inputs, keyboard navigation, visible focus, overdue = red + icon |
 
 ## 11. Testing Strategy
