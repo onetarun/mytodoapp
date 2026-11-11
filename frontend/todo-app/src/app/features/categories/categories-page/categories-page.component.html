@@ -1,0 +1,103 @@
+<h1>Categories</h1>
+
+<form
+  class="add-form"
+  [formGroup]="addForm"
+  (ngSubmit)="add()"
+  novalidate
+  aria-label="Add category"
+>
+  <mat-form-field appearance="outline" class="add-field">
+    <mat-label>New category</mat-label>
+    <input
+      #addInput
+      matInput
+      formControlName="name"
+      [attr.maxlength]="maxLength"
+      autocomplete="off"
+      required
+    />
+    @if (newName.hasError('required')) {
+      <mat-error>Name is required.</mat-error>
+    } @else if (newName.hasError('maxlength')) {
+      <mat-error>Name must be {{ maxLength }} characters or fewer.</mat-error>
+    } @else if (newName.hasError('server')) {
+      <mat-error>{{ newName.getError('server') }}</mat-error>
+    }
+  </mat-form-field>
+  <button mat-flat-button type="submit" [disabled]="busy()">Add category</button>
+</form>
+
+@if (loading()) {
+  <mat-spinner diameter="32" aria-label="Loading categories" />
+} @else if (categories().length === 0) {
+  <p class="empty-state">No categories yet</p>
+} @else {
+  <ul class="category-list" aria-label="Your categories">
+    @for (category of categories(); track category.id) {
+      <li class="category-row">
+        @if (editingId() === category.id) {
+          <form
+            class="edit-form"
+            [formGroup]="editForm"
+            (ngSubmit)="saveEdit(category)"
+            (keydown.escape)="cancelEdit()"
+            novalidate
+            [attr.aria-label]="'Rename ' + category.name"
+          >
+            <mat-form-field appearance="outline" class="edit-field">
+              <mat-label>Category name</mat-label>
+              <input
+                #editInput
+                matInput
+                formControlName="name"
+                [attr.maxlength]="maxLength"
+                autocomplete="off"
+                required
+              />
+              <mat-hint>Enter to save, Esc to cancel</mat-hint>
+              @if (editName.hasError('required')) {
+                <mat-error>Name is required.</mat-error>
+              } @else if (editName.hasError('maxlength')) {
+                <mat-error>Name must be {{ maxLength }} characters or fewer.</mat-error>
+              } @else if (editName.hasError('server')) {
+                <mat-error>{{ editName.getError('server') }}</mat-error>
+              }
+            </mat-form-field>
+            <button mat-flat-button type="submit" [disabled]="busy()">Save</button>
+            <button mat-button type="button" (click)="cancelEdit()">Cancel</button>
+          </form>
+        } @else {
+          <span class="category-name">{{ category.name }}</span>
+          <span class="task-count">
+            {{ category.taskCount }} {{ category.taskCount === 1 ? 'task' : 'tasks' }}
+          </span>
+          <button
+            mat-icon-button
+            type="button"
+            [attr.data-category-id]="category.id"
+            data-action="rename"
+            [attr.aria-label]="'Rename ' + category.name"
+            matTooltip="Rename"
+            [disabled]="busy()"
+            (click)="startEdit(category)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            type="button"
+            [attr.data-category-id]="category.id"
+            data-action="delete"
+            [attr.aria-label]="'Delete ' + category.name"
+            matTooltip="Delete"
+            [disabled]="busy()"
+            (click)="remove(category)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        }
+      </li>
+    }
+  </ul>
+}
