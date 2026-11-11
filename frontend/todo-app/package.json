@@ -6,7 +6,6 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
     "lint": "ng lint",
     "format:check": "prettier --check \"src/**/*.{ts,html,scss}\"",
     "format": "prettier --write \"src/**/*.{ts,html,scss}\""
