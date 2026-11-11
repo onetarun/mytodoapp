@@ -64,7 +64,7 @@ export class LoginPageComponent {
     this.formError.set(null);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      focusFirstInvalid(this.formElement().nativeElement);
+      focusFirstInvalid(this.formElement().nativeElement, this.form);
       return;
     }
 

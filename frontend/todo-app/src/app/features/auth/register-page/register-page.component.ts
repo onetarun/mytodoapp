@@ -76,7 +76,7 @@ export class RegisterPageComponent {
     this.formError.set(null);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      focusFirstInvalid(this.formElement().nativeElement);
+      focusFirstInvalid(this.formElement().nativeElement, this.form);
       return;
     }
 
@@ -100,6 +100,6 @@ export class RegisterPageComponent {
     const unmatched = applyServerErrors(this.form, error);
     const shownOnFields = Object.keys(error.fieldErrors).length > unmatched.length;
     this.formError.set(unmatched[0] ?? (shownOnFields ? null : error.message));
-    focusFirstInvalid(this.formElement().nativeElement);
+    focusFirstInvalid(this.formElement().nativeElement, this.form);
   }
 }
