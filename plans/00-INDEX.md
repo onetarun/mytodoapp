@@ -8,7 +8,7 @@
 | # | Task | Depends on | Layer | Status |
 |---|---|---|---|---|
 | 01 | [Environment setup](01-environment-setup.md) | — | Setup | ✅ Done |
-| 02 | [Backend solution scaffold & cross-cutting setup](02-backend-scaffold.md) | 01 | Backend | 🟡 Awaiting merge |
+| 02 | [Backend solution scaffold & cross-cutting setup](02-backend-scaffold.md) | 01 | Backend | ✅ Done |
 | 03 | [Database: entities, DbContext, migrations](03-database-entities.md) | 02 | Backend | ☐ Not started |
 | 04 | [Authentication API](04-auth-api.md) | 03 | Backend | ☐ Not started |
 | 05 | [Category API](05-category-api.md) | 04 | Backend | ☐ Not started |
