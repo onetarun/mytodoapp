@@ -27,11 +27,12 @@ export const errorInterceptor: HttpInterceptorFn = (request, next) => {
         return throwError(() => response);
       }
 
+      // The login page shows its own 401/423/429 messages inline.
       const isLoginCall = request.url === LOGIN_URL;
       if (response.status === HttpStatusCode.Unauthorized && !isLoginCall) {
         toast.error(SESSION_EXPIRED_MESSAGE);
         auth.logout();
-      } else if (response.status === HttpStatusCode.TooManyRequests) {
+      } else if (response.status === HttpStatusCode.TooManyRequests && !isLoginCall) {
         toast.error(TOO_MANY_REQUESTS_MESSAGE);
       } else if (response.status === 0 || response.status >= HttpStatusCode.InternalServerError) {
         toast.error(SERVER_ERROR_MESSAGE);
