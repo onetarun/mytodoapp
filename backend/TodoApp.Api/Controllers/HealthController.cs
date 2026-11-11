@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace TodoApp.Api.Controllers;
 
 /// <summary>
-/// Temporary smoke-check endpoint (Task 02). Task 04 removes it or keeps it anonymous.
+/// Anonymous smoke-check endpoint (Task 02). Kept anonymous in Task 04.
 /// </summary>
 [ApiController]
 [Route("api/v1/health")]
