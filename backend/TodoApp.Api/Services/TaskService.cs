@@ -12,8 +12,6 @@ namespace TodoApp.Api.Services;
 /// </summary>
 public sealed class TaskService(AppDbContext dbContext, ICurrentUserService currentUserService) : ITaskService
 {
-    private static readonly IReadOnlyList<SubTaskDto> NoSubTasks = [];
-
     public async Task<IReadOnlyList<TaskListItemDto>> GetAllAsync(TaskStatusFilter status, CancellationToken cancellationToken = default)
     {
         var query = dbContext.TodoTasks.AsNoTracking();
@@ -68,7 +66,11 @@ public sealed class TaskService(AppDbContext dbContext, ICurrentUserService curr
                 t.CompletedAt,
                 t.CreatedAt,
                 t.UpdatedAt,
-                NoSubTasks))
+                t.SubTasks
+                    .Where(s => !s.IsDeleted)
+                    .OrderBy(s => s.SortOrder)
+                    .Select(s => new SubTaskDto(s.Id, s.Title, s.IsCompleted, s.SortOrder))
+                    .ToList()))
             .SingleOrDefaultAsync(cancellationToken);
 
         return detail is null
