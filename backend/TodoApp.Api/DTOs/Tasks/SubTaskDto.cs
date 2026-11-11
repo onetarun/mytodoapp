@@ -1,6 +1,6 @@
 namespace TodoApp.Api.DTOs.Tasks;
 
 /// <summary>
-/// A checklist item of a task. Defined here for <see cref="TaskDetailDto.SubTasks"/>; filled from Task 07.
+/// A checklist item of a task (FR-11, FR-12). Listed in <see cref="TaskDetailDto.SubTasks"/> by <c>SortOrder</c>.
 /// </summary>
 public sealed record SubTaskDto(int Id, string Title, bool IsCompleted, int SortOrder);
