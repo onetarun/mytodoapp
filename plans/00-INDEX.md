@@ -11,7 +11,7 @@
 | 02 | [Backend solution scaffold & cross-cutting setup](02-backend-scaffold.md) | 01 | Backend | ✅ Done |
 | 03 | [Database: entities, DbContext, migrations](03-database-entities.md) | 02 | Backend | ✅ Done |
 | 04 | [Authentication API](04-auth-api.md) | 03 | Backend | ✅ Done |
-| 05 | [Category API](05-category-api.md) | 04 | Backend | ☐ Not started |
+| 05 | [Category API](05-category-api.md) | 04 | Backend | 🟡 Awaiting merge |
 | 06 | [Task API](06-task-api.md) | 05 | Backend | ☐ Not started |
 | 07 | [SubTask API](07-subtask-api.md) | 06 | Backend | ☐ Not started |
 | 08 | [Dashboard & Notifications API](08-dashboard-notifications-api.md) | 07 | Backend | ☐ Not started |
