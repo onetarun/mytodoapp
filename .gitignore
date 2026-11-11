@@ -1,0 +1,16 @@
+# .NET
+bin/
+obj/
+*.user
+*.bak
+.vs/
+TestResults/
+coverage/
+
+# Node / Angular
+node_modules/
+.angular/
+dist/
+
+# Project
+logs/
