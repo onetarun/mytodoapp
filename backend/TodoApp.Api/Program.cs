@@ -1,6 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
+using FluentValidation;
+
 using Microsoft.EntityFrameworkCore;
 
 using Serilog;
@@ -9,6 +11,7 @@ using TodoApp.Api.Data;
 using TodoApp.Api.Extensions;
 using TodoApp.Api.Middleware;
 using TodoApp.Api.Services;
+using TodoApp.Api.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +23,10 @@ builder.Services.AddSerilog((_, loggerConfiguration) =>
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
+// Request validation (FluentValidation) runs before every action.
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services
-    .AddControllers()
+    .AddControllers(options => options.Filters.Add<ValidationFilter>())
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
@@ -36,8 +41,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddApiCors(builder.Configuration);
 builder.Services.AddApiRateLimiting(builder.Configuration);
-builder.Services.AddAuthentication();
-builder.Services.AddAuthorization();
+// Identity + JWT Bearer, and every endpoint requires an authenticated user by default (AD-4, AD-5).
+builder.Services.AddApiAuthentication(builder.Configuration);
 
 if (builder.Environment.IsDevelopment())
 {
@@ -46,7 +51,8 @@ if (builder.Environment.IsDevelopment())
 
 var app = builder.Build();
 
-// Middleware order: exception handler → HTTPS → CORS → rate limiter → authentication → authorization → controllers.
+// Middleware order: exception handler → HTTPS → CORS → authentication → rate limiter → authorization → controllers.
+// Authentication runs before the rate limiter so the default limit is partitioned per user (NFR-15).
 app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
@@ -61,8 +67,8 @@ else
 
 app.UseHttpsRedirection();
 app.UseCors(CorsExtensions.AngularClientPolicy);
-app.UseRateLimiter();
 app.UseAuthentication();
+app.UseRateLimiter();
 app.UseAuthorization();
 
 app.MapControllers();
