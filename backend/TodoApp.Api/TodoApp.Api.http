@@ -1,0 +1,6 @@
+@TodoApp.Api_HostAddress = https://localhost:7146
+
+GET {{TodoApp.Api_HostAddress}}/api/v1/health
+Accept: application/json
+
+###

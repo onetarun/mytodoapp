@@ -135,6 +135,7 @@ Ask the client and wait for an explicit "yes" **before** any of these:
 - `FluentValidation.AspNetCore` / `FluentValidation.DependencyInjectionExtensions`
 - `Serilog.AspNetCore`, `Serilog.Sinks.File`
 - `Swashbuckle.AspNetCore`
+- `System.Security.Cryptography.Pkcs` (security pin only: overrides the vulnerable transitive 9.0.11 from `Microsoft.Data.SqlClient`)
 
 ### Backend tests (`TodoApp.Tests`)
 - `xunit`, `xunit.runner.visualstudio`, `Microsoft.NET.Test.Sdk` (template defaults)
@@ -159,3 +160,4 @@ Ask the client and wait for an explicit "yes" **before** any of these:
 | Date | Change | Approved by |
 |---|---|---|
 | 2026-11-11 | Initial guardrails | Client |
+| 2026-11-11 | Added `System.Security.Cryptography.Pkcs` 10.0.14 (MIT) to Appendix A as a direct pin. EF Core SqlServer 10.0.11 pulls 9.0.11 via `Microsoft.Data.SqlClient`, which has advisories GHSA-846f-f764-76mx (high) and GHSA-2fmv-rv2c-59x7 (moderate) and fails the build under warnings-as-errors (Task 02) | Client |
