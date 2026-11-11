@@ -4,10 +4,11 @@ namespace TodoApp.Api.Extensions;
 
 public static class SwaggerExtensions
 {
-    private const string BearerSchemeName = "Bearer";
+    public const string BearerSchemeName = "Bearer";
 
     /// <summary>
-    /// Adds Swagger generation with a JWT Bearer "Authorize" button (NFR-27).
+    /// Adds Swagger generation with a JWT Bearer "Authorize" button (NFR-27). The Bearer lock and a
+    /// <c>401</c> response are added only to endpoints that require authentication (see <see cref="BearerSecurityOperationFilter"/>).
     /// </summary>
     public static IServiceCollection AddApiSwagger(this IServiceCollection services)
     {
@@ -25,10 +26,7 @@ public static class SwaggerExtensions
                 Description = "Paste the JWT returned by the login endpoint.",
             });
 
-            options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
-            {
-                [new OpenApiSecuritySchemeReference(BearerSchemeName, document)] = [],
-            });
+            options.OperationFilter<BearerSecurityOperationFilter>();
         });
 
         return services;
