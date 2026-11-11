@@ -1,12 +1,18 @@
 <h1>Categories</h1>
 
-<form class="add-form" (ngSubmit)="add()" novalidate aria-label="Add category">
+<form
+  class="add-form"
+  [formGroup]="addForm"
+  (ngSubmit)="add()"
+  novalidate
+  aria-label="Add category"
+>
   <mat-form-field appearance="outline" class="add-field">
     <mat-label>New category</mat-label>
     <input
       #addInput
       matInput
-      [formControl]="newName"
+      formControlName="name"
       [attr.maxlength]="maxLength"
       autocomplete="off"
       required
@@ -33,6 +39,7 @@
         @if (editingId() === category.id) {
           <form
             class="edit-form"
+            [formGroup]="editForm"
             (ngSubmit)="saveEdit(category)"
             (keydown.escape)="cancelEdit()"
             novalidate
@@ -43,7 +50,7 @@
               <input
                 #editInput
                 matInput
-                [formControl]="editName"
+                formControlName="name"
                 [attr.maxlength]="maxLength"
                 autocomplete="off"
                 required

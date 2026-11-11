@@ -10,7 +10,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -60,15 +60,11 @@ export class CategoriesPageComponent implements OnInit {
   protected readonly busy = signal(false);
   protected readonly editingId = signal<number | null>(null);
 
-  protected readonly newName = new FormControl('', {
-    nonNullable: true,
-    validators: [notBlankValidator, Validators.maxLength(CATEGORY_NAME_MAX_LENGTH)],
-  });
-
-  protected readonly editName = new FormControl('', {
-    nonNullable: true,
-    validators: [notBlankValidator, Validators.maxLength(CATEGORY_NAME_MAX_LENGTH)],
-  });
+  // Each form has a FormGroup so Angular handles submit (Enter) instead of the browser.
+  protected readonly addForm = new FormGroup({ name: categoryNameControl() });
+  protected readonly editForm = new FormGroup({ name: categoryNameControl() });
+  protected readonly newName = this.addForm.controls.name;
+  protected readonly editName = this.editForm.controls.name;
 
   ngOnInit(): void {
     this.categoryService
@@ -212,4 +208,11 @@ export class CategoriesPageComponent implements OnInit {
       { injector: this.injector },
     );
   }
+}
+
+function categoryNameControl(): FormControl<string> {
+  return new FormControl('', {
+    nonNullable: true,
+    validators: [notBlankValidator, Validators.maxLength(CATEGORY_NAME_MAX_LENGTH)],
+  });
 }
