@@ -19,7 +19,7 @@
 | 10 | [Angular scaffold & core setup](10-frontend-scaffold.md) | 09 | Frontend | ✅ Done |
 | 11 | [Frontend: Login & Register](11-frontend-auth.md) | 10 | Frontend | ✅ Done |
 | 12 | [Frontend: Categories](12-frontend-categories.md) | 11 | Frontend | ✅ Done |
-| 13 | [Frontend: Tasks](13-frontend-tasks.md) | 12 | Frontend | ☐ Not started |
+| 13 | [Frontend: Tasks](13-frontend-tasks.md) | 12 | Frontend | 🔄 In progress |
 | 14 | [Frontend: SubTasks / Checklist](14-frontend-subtasks.md) | 13 | Frontend | ☐ Not started |
 | 15 | [Frontend: Dashboard & Notification bell](15-frontend-dashboard-notifications.md) | 14 | Frontend | ☐ Not started |
 | 16 | [Responsive & accessibility polish](16-responsive-accessibility.md) | 15 | Frontend | ☐ Not started |
