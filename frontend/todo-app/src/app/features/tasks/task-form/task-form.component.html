@@ -1,0 +1,94 @@
+<form #formElement [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  @if (formError(); as message) {
+    <p class="form-error" role="alert">{{ message }}</p>
+  }
+
+  <div class="title-row">
+    <mat-form-field appearance="outline" class="title-field">
+      <mat-label>Task title</mat-label>
+      <input
+        #titleInput
+        matInput
+        formControlName="title"
+        [attr.maxlength]="rules.titleMaxLength"
+        autocomplete="off"
+        required
+      />
+      @if (form.controls.title.hasError('required')) {
+        <mat-error>Title is required.</mat-error>
+      } @else if (form.controls.title.hasError('maxlength')) {
+        <mat-error>Title must be {{ rules.titleMaxLength }} characters or fewer.</mat-error>
+      } @else if (form.controls.title.hasError('server')) {
+        <mat-error>{{ form.controls.title.getError('server') }}</mat-error>
+      }
+    </mat-form-field>
+
+    @if (!showDetails()) {
+      <button mat-flat-button type="submit" class="inline-submit" [disabled]="submitting()">
+        {{ submitLabel() }}
+      </button>
+    }
+  </div>
+
+  @if (showDetails()) {
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        formControlName="description"
+        rows="3"
+        [attr.maxlength]="rules.descriptionMaxLength"
+      ></textarea>
+      <mat-hint align="end"
+        >{{ form.controls.description.value.length }} / {{ rules.descriptionMaxLength }}</mat-hint
+      >
+      @if (form.controls.description.hasError('maxlength')) {
+        <mat-error
+          >Description must be {{ rules.descriptionMaxLength }} characters or fewer.</mat-error
+        >
+      } @else if (form.controls.description.hasError('server')) {
+        <mat-error>{{ form.controls.description.getError('server') }}</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="details-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Due date and time</mat-label>
+        <input matInput type="datetime-local" formControlName="dueDate" />
+        <mat-hint>Your local time</mat-hint>
+        @if (form.controls.dueDate.hasError('server')) {
+          <mat-error>{{ form.controls.dueDate.getError('server') }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Priority</mat-label>
+        <mat-select formControlName="priority">
+          @for (priority of rules.priorities; track priority) {
+            <mat-option [value]="priority">{{ priority }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="categoryId">
+          <mat-option [value]="null">Uncategorized</mat-option>
+          @for (category of categories(); track category.id) {
+            <mat-option [value]="category.id">{{ category.name }}</mat-option>
+          }
+        </mat-select>
+        @if (form.controls.categoryId.hasError('server')) {
+          <mat-error>{{ form.controls.categoryId.getError('server') }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="actions">
+      @if (cancellable()) {
+        <button mat-button type="button" (click)="cancelled.emit()">Cancel</button>
+      }
+      <button mat-flat-button type="submit" [disabled]="submitting()">{{ submitLabel() }}</button>
+    </div>
+  }
+</form>

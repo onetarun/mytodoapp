@@ -1,0 +1,97 @@
+:host {
+  display: block;
+  max-width: 900px;
+}
+
+.quick-add {
+  padding: var(--app-space-3);
+  margin-bottom: var(--app-space-3);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 12px;
+  background: var(--mat-sys-surface-container-low);
+}
+
+.details-toggle {
+  margin-top: var(--app-space-1);
+}
+
+.status-filter {
+  margin-bottom: var(--app-space-3);
+}
+
+.task-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--mat-sys-outline-variant);
+}
+
+.task-row {
+  display: flex;
+  align-items: center;
+  gap: var(--app-space-2);
+  padding: var(--app-space-2) var(--app-space-2);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  border-left: 4px solid transparent;
+
+  // FR-21 / NFR-24: red highlight plus icon and text.
+  &.overdue {
+    border-left-color: var(--app-color-danger);
+    background: #fdf0ef;
+  }
+}
+
+.task-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.task-title {
+  font: var(--mat-sys-body-large);
+  color: var(--mat-sys-on-surface);
+  overflow-wrap: anywhere;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  .completed & {
+    text-decoration: line-through;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+.task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--app-space-1) var(--app-space-3);
+  margin-top: var(--app-space-1);
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.due,
+.progress,
+.overdue-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.meta-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.overdue-label {
+  color: var(--app-color-danger);
+  font-weight: 700;
+}
+
+.empty-state {
+  margin-top: var(--app-space-4);
+  color: var(--mat-sys-on-surface-variant);
+}

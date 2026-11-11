@@ -1,0 +1,100 @@
+<h1>Tasks</h1>
+
+<section class="quick-add" aria-label="Add a task">
+  <app-task-form
+    [save]="createTask"
+    [showDetails]="detailsOpen()"
+    submitLabel="Add task"
+    [resetAfterSave]="true"
+    (saved)="onCreated()"
+  />
+  <button
+    mat-button
+    type="button"
+    class="details-toggle"
+    [attr.aria-expanded]="detailsOpen()"
+    (click)="detailsOpen.set(!detailsOpen())"
+  >
+    <mat-icon>{{ detailsOpen() ? 'expand_less' : 'expand_more' }}</mat-icon>
+    {{ detailsOpen() ? 'Hide details' : 'Add details' }}
+  </button>
+</section>
+
+<mat-button-toggle-group
+  class="status-filter"
+  aria-label="Status filter"
+  [value]="activeStatus()"
+  (change)="changeStatus($event)"
+>
+  @for (status of statusFilters; track status) {
+    <mat-button-toggle [value]="status">{{ status | titlecase }}</mat-button-toggle>
+  }
+</mat-button-toggle-group>
+
+@if (loading() && tasks().length === 0) {
+  <mat-spinner diameter="32" aria-label="Loading tasks" />
+} @else if (tasks().length === 0) {
+  <p class="empty-state">{{ emptyMessage() }}</p>
+} @else {
+  <ul class="task-list" aria-label="Tasks" [attr.aria-busy]="loading()">
+    @for (task of tasks(); track task.id) {
+      <li class="task-row" [class.overdue]="task.isOverdue" [class.completed]="task.isCompleted">
+        <mat-checkbox
+          [checked]="task.isCompleted"
+          [disabled]="busyTaskId() === task.id"
+          [aria-label]="
+            (task.isCompleted ? 'Mark as pending: ' : 'Mark as complete: ') + task.title
+          "
+          (change)="toggleComplete(task)"
+        />
+
+        <div class="task-main">
+          <a class="task-title" [routerLink]="['/tasks', task.id]">{{ task.title }}</a>
+          <div class="task-meta">
+            <app-priority-badge [priority]="task.priority" />
+            <span class="category">{{ task.categoryName ?? 'Uncategorized' }}</span>
+            @if (task.dueDate) {
+              <span class="due">
+                <mat-icon class="meta-icon" aria-hidden="true">schedule</mat-icon>
+                <span class="visually-hidden">Due </span>{{ task.dueDate | date: 'medium' }}
+              </span>
+            }
+            @if (task.subTaskTotal > 0) {
+              <span class="progress">
+                <mat-icon class="meta-icon" aria-hidden="true">checklist</mat-icon>
+                <span class="visually-hidden">Checklist </span>{{ progressLabel(task) }}
+              </span>
+            }
+            @if (task.isOverdue) {
+              <span class="overdue-label">
+                <mat-icon class="meta-icon" aria-hidden="true">warning</mat-icon>
+                Overdue
+              </span>
+            }
+          </div>
+        </div>
+
+        <button
+          mat-icon-button
+          type="button"
+          [attr.aria-label]="'Edit ' + task.title"
+          matTooltip="Edit"
+          [disabled]="busyTaskId() === task.id"
+          (click)="edit(task)"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          type="button"
+          [attr.aria-label]="'Delete ' + task.title"
+          matTooltip="Delete"
+          [disabled]="busyTaskId() === task.id"
+          (click)="remove(task)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </li>
+    }
+  </ul>
+}

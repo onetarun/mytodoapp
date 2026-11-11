@@ -1,0 +1,65 @@
+<a mat-button routerLink="/tasks" class="back-link">
+  <mat-icon>arrow_back</mat-icon>
+  Back to tasks
+</a>
+
+@if (loading()) {
+  <mat-spinner diameter="32" aria-label="Loading task" />
+} @else if (notFound()) {
+  <h1>Task not found</h1>
+  <p>This task does not exist or was deleted. <a routerLink="/tasks">Back to the task list</a></p>
+} @else {
+  @if (task(); as current) {
+    <article class="task-detail" [class.overdue]="current.isOverdue">
+      <header class="detail-header">
+        <h1 [class.completed]="current.isCompleted">{{ current.title }}</h1>
+        <button mat-stroked-button type="button" (click)="edit(current)">
+          <mat-icon>edit</mat-icon>
+          Edit
+        </button>
+      </header>
+
+      @if (current.isOverdue) {
+        <p class="overdue-label">
+          <mat-icon aria-hidden="true">warning</mat-icon>
+          Overdue
+        </p>
+      }
+
+      <dl class="fields">
+        <dt>Status</dt>
+        <dd>
+          {{ current.isCompleted ? 'Completed' : 'Pending' }}
+          @if (current.completedAt) {
+            ({{ current.completedAt | date: 'medium' }})
+          }
+        </dd>
+
+        <dt>Priority</dt>
+        <dd><app-priority-badge [priority]="current.priority" /></dd>
+
+        <dt>Category</dt>
+        <dd>{{ current.categoryName ?? 'Uncategorized' }}</dd>
+
+        <dt>Due</dt>
+        <dd>{{ current.dueDate ? (current.dueDate | date: 'medium') : 'No due date' }}</dd>
+
+        <dt>Description</dt>
+        <dd class="description">{{ current.description ?? 'No description' }}</dd>
+
+        <dt>Created</dt>
+        <dd>{{ current.createdAt | date: 'medium' }}</dd>
+
+        <dt>Last updated</dt>
+        <dd>{{ current.updatedAt | date: 'medium' }}</dd>
+      </dl>
+
+      <section class="checklist" aria-labelledby="checklist-heading">
+        <h2 id="checklist-heading">Checklist</h2>
+        <p class="checklist-summary">
+          {{ current.subTaskCompleted }}/{{ current.subTaskTotal }} done
+        </p>
+      </section>
+    </article>
+  }
+}
