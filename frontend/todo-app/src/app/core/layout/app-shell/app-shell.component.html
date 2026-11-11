@@ -1,0 +1,40 @@
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<mat-toolbar class="app-header" role="banner">
+  <a class="app-name" routerLink="/dashboard">Todo App</a>
+
+  <nav class="app-nav" aria-label="Main">
+    @for (link of navLinks; track link.path) {
+      <a
+        mat-button
+        [routerLink]="link.path"
+        routerLinkActive="active-link"
+        ariaCurrentWhenActive="page"
+        >{{ link.label }}</a
+      >
+    }
+  </nav>
+
+  <span class="spacer"></span>
+
+  <!-- Notification bell: wired to the API in Task 15. -->
+  <button
+    mat-icon-button
+    type="button"
+    aria-label="Notifications"
+    matTooltip="Notifications"
+    disabled
+  >
+    <mat-icon>notifications</mat-icon>
+  </button>
+
+  @if (user(); as currentUser) {
+    <span class="user-name">{{ currentUser.name }}</span>
+  }
+
+  <button mat-stroked-button type="button" (click)="logout()">Logout</button>
+</mat-toolbar>
+
+<main id="main-content" class="app-content" tabindex="-1">
+  <router-outlet />
+</main>
