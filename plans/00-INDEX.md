@@ -13,7 +13,7 @@
 | 04 | [Authentication API](04-auth-api.md) | 03 | Backend | ✅ Done |
 | 05 | [Category API](05-category-api.md) | 04 | Backend | ✅ Done |
 | 06 | [Task API](06-task-api.md) | 05 | Backend | ✅ Done |
-| 07 | [SubTask API](07-subtask-api.md) | 06 | Backend | 🟡 Awaiting merge |
+| 07 | [SubTask API](07-subtask-api.md) | 06 | Backend | ✅ Done |
 | 08 | [Dashboard & Notifications API](08-dashboard-notifications-api.md) | 07 | Backend | ☐ Not started |
 | 09 | [Backend test coverage gate](09-backend-test-coverage.md) | 08 | Backend | ☐ Not started |
 | 10 | [Angular scaffold & core setup](10-frontend-scaffold.md) | 09 | Frontend | ☐ Not started |
