@@ -30,7 +30,7 @@ All 23 functional requirements (FR-1 to FR-22, including FR-10a) and NFR-1 to NF
 | Fresh setup works by following README | ✅ | New clone + new database `TodoAppDb_ReadmeCheck`: build, format, tests, migrations (11 tables), npm ci, lint, format, build, API register 201 with Work + Personal; database dropped afterwards |
 | No open critical / high issues | ✅ | The only real issue (README, medium) is fixed |
 | Demo to the client | ⚠️ NOT VERIFIED | Client action |
-| Client sign-off in BRD §10 | ⚠️ NOT VERIFIED | Client action. Claude records it in `BRD.md` once the client gives explicit approval |
+| Client sign-off in BRD §10 | ✅ | Client approved v1 in chat on 2026-11-12; recorded in `BRD.md` §10 |
 
 ## Guardrails
 | ID | Status | Notes |

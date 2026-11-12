@@ -170,5 +170,5 @@ A **simple, fast task-tracking web application for individual users**. A user ca
 
 | Role | Name | Approval |
 |---|---|---|
-| Client | | ☐ Approved |
+| Client | Client | ☑ Approved — 2026-11-12 (v1 accepted after Task 18 QA; Edge smoke test and demo left to the client) |
 | Business Analyst | Claude | ✔ Prepared |
