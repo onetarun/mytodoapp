@@ -60,6 +60,24 @@ function Get-HttpStatus([string]$Url, [string]$Method = 'GET', [string]$Body = $
     }
 }
 
+function New-DeployZip([string]$SourceDir, [string]$ZipPath) {
+    # ZipFile.CreateFromDirectory on Windows PowerShell 5.1 (.NET Framework) writes '\' in entry
+    # names, which App Service on Linux does not treat as folders. Entry names here always use '/'.
+    Add-Type -AssemblyName System.IO.Compression
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $root = (Resolve-Path -LiteralPath $SourceDir).ProviderPath.TrimEnd('\', '/') + [IO.Path]::DirectorySeparatorChar
+    $archive = [IO.Compression.ZipFile]::Open($ZipPath, [IO.Compression.ZipArchiveMode]::Create)
+    try {
+        foreach ($file in Get-ChildItem -LiteralPath $root -Recurse -File -Force) {
+            $entryName = $file.FullName.Substring($root.Length).Replace('\', '/')
+            [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive, $file.FullName, $entryName) | Out-Null
+        }
+    }
+    finally {
+        $archive.Dispose()
+    }
+}
+
 foreach ($tool in 'dotnet', 'npm') {
     if (-not (Get-Command $tool -ErrorAction SilentlyContinue)) { throw "'$tool' is not installed (see README §1)." }
 }
@@ -106,8 +124,7 @@ try {
     }
 
     Write-Step 'Zip deploy to App Service'
-    Add-Type -AssemblyName System.IO.Compression.FileSystem
-    [IO.Compression.ZipFile]::CreateFromDirectory($publishDir, $zipPath)
+    New-DeployZip -SourceDir $publishDir -ZipPath $zipPath
     Invoke-Az webapp deploy -g $ResourceGroup -n $AppName --src-path $zipPath --type zip -o none | Out-Null
 
     Write-Step 'Smoke check'
