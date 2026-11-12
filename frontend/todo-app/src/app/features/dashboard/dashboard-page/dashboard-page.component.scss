@@ -18,7 +18,7 @@ h2 {
 
 .stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: 1fr;
   gap: var(--app-space-3);
   list-style: none;
   margin: 0 0 var(--app-space-4);
@@ -89,6 +89,9 @@ a.stat-card:hover {
 }
 
 .upcoming-title {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   flex: 1 1 200px;
   font: var(--mat-sys-body-large);
   color: var(--mat-sys-on-surface);
@@ -128,4 +131,17 @@ a.stat-card:hover {
 
 .muted {
   color: var(--mat-sys-on-surface-variant);
+}
+
+// NFR-20: stat cards 1 column on mobile, 3 on tablet, all 5 in one row on desktop.
+@media (min-width: 600px) {
+  .stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .stats {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }

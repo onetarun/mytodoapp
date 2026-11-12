@@ -5,11 +5,7 @@
   [attr.aria-label]="ariaLabel()"
   matTooltip="Notifications"
 >
-  <mat-icon
-    [matBadge]="count()"
-    [matBadgeHidden]="count() === 0"
-    matBadgeColor="warn"
-    matBadgeSize="small"
+  <mat-icon [matBadge]="count()" [matBadgeHidden]="count() === 0" matBadgeColor="warn"
     >notifications</mat-icon
   >
 </button>
