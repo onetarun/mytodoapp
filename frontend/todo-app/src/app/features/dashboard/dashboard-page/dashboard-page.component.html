@@ -1,0 +1,87 @@
+<h1>Dashboard</h1>
+
+<section class="quick-add" aria-label="Add a task">
+  <app-task-form
+    [save]="createTask"
+    [showDetails]="false"
+    submitLabel="Add task"
+    [resetAfterSave]="true"
+    (saved)="onCreated()"
+  />
+</section>
+
+@if (summary(); as current) {
+  @if (isEmpty()) {
+    <section class="empty-state" aria-labelledby="empty-heading">
+      <mat-icon class="empty-icon" aria-hidden="true">inbox</mat-icon>
+      <h2 id="empty-heading">No tasks yet</h2>
+      <p>Add your first task above, or open the <a routerLink="/tasks">task list</a>.</p>
+    </section>
+  } @else {
+    <section aria-labelledby="stats-heading" [attr.aria-busy]="loading()">
+      <h2 id="stats-heading" class="visually-hidden">Task counts</h2>
+      <ul class="stats">
+        @for (card of cards; track card.key) {
+          <li>
+            @if (card.status !== null) {
+              <a
+                class="stat-card"
+                [routerLink]="['/tasks']"
+                [queryParams]="statusParams(card.status)"
+              >
+                <ng-container
+                  *ngTemplateOutlet="
+                    cardBody;
+                    context: { $implicit: card, value: current[card.key] }
+                  "
+                />
+              </a>
+            } @else {
+              <div class="stat-card" [class.danger]="card.danger">
+                <ng-container
+                  *ngTemplateOutlet="
+                    cardBody;
+                    context: { $implicit: card, value: current[card.key] }
+                  "
+                />
+              </div>
+            }
+          </li>
+        }
+      </ul>
+    </section>
+
+    <section class="upcoming" aria-labelledby="upcoming-heading">
+      <h2 id="upcoming-heading">Upcoming (next 7 days)</h2>
+      @if (current.upcoming.length === 0) {
+        <p class="muted">Nothing due in the next 7 days.</p>
+      } @else {
+        <ul class="upcoming-list">
+          @for (task of current.upcoming; track task.id) {
+            <li class="upcoming-row">
+              <a class="upcoming-title" [routerLink]="['/tasks', task.id]">{{ task.title }}</a>
+              @if (task.dueDate) {
+                <span class="due">
+                  <mat-icon class="meta-icon" aria-hidden="true">schedule</mat-icon>
+                  <span class="visually-hidden">Due </span>{{ task.dueDate | date: 'medium' }}
+                </span>
+              }
+              <app-priority-badge [priority]="task.priority" />
+            </li>
+          }
+        </ul>
+      }
+    </section>
+  }
+} @else if (loadFailed()) {
+  <p class="muted" role="alert">Could not load the dashboard.</p>
+  <button mat-stroked-button type="button" (click)="load()">Try again</button>
+} @else {
+  <mat-spinner diameter="32" aria-label="Loading dashboard" />
+}
+
+<ng-template #cardBody let-card let-value="value">
+  <mat-icon class="stat-icon" aria-hidden="true">{{ card.icon }}</mat-icon>
+  <span class="stat-value">{{ value }}</span>
+  <span class="stat-label">{{ card.label }}</span>
+</ng-template>
