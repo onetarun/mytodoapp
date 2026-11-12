@@ -27,7 +27,7 @@
 | 18 | [Final QA & BRD acceptance](18-final-qa-acceptance.md) | 17 | QA | ✅ Done |
 | 19 | [Azure deployment](19-azure-deployment.md) (BRD v1.3) | 18 | Ops | ✅ Done |
 | 20 | [Square buttons with rounded corners](20-square-buttons.md) (BRD v1.4, issue #1) | 19 | Frontend | ✅ Done |
-| 21 | [Fix deploy zip paths](21-deploy-zip-paths.md) | 20 | Ops | 🟡 Awaiting merge |
+| 21 | [Fix deploy zip paths](21-deploy-zip-paths.md) | 20 | Ops | ✅ Done |
 
 ## Dependency Chain
 
