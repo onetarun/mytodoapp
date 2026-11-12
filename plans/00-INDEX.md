@@ -1,6 +1,6 @@
 # Implementation Plan — Index
 
-**Based on:** [BRD.md](../BRD.md) v1.3 and [ARCHITECTURE.md](../ARCHITECTURE.md) v1.0
+**Based on:** [BRD.md](../BRD.md) v1.4 and [ARCHITECTURE.md](../ARCHITECTURE.md) v1.0
 **Execution rule:** Tasks run **strictly in sequential order**. A task starts only when every task it depends on is **Done** and its "Definition of Done" checklist is fully ticked.
 
 ## Task Order
@@ -26,6 +26,7 @@
 | 17 | [Database backup & restore](17-database-backup.md) | 16 | Ops | ✅ Done |
 | 18 | [Final QA & BRD acceptance](18-final-qa-acceptance.md) | 17 | QA | ✅ Done |
 | 19 | [Azure deployment](19-azure-deployment.md) (BRD v1.3) | 18 | Ops | ✅ Done |
+| 20 | [Square buttons with rounded corners](20-square-buttons.md) (BRD v1.4, issue #1) | 19 | Frontend | 🟡 Awaiting merge |
 
 ## Dependency Chain
 
@@ -43,7 +44,7 @@
                                         18 Final QA ◄── 17 Backup ◄─────────────┘
          │
          ▼
-19 Azure deployment
+19 Azure deployment ─► 20 Square buttons
 ```
 
 ## Why this order
