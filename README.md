@@ -4,7 +4,7 @@ A simple, fast task tracker for individual users: tasks with due dates, prioriti
 
 - **Backend:** ASP.NET Core Web API (.NET 10), EF Core + SQL Server, ASP.NET Core Identity + JWT — `backend/`
 - **Frontend:** Angular 22 + Angular Material — `frontend/todo-app/`
-- **Docs:** [BRD.md](BRD.md) (requirements) · [ARCHITECTURE.md](ARCHITECTURE.md) · [GUARDRAILS.md](GUARDRAILS.md) · [plans/](plans/00-INDEX.md) · [ops/RESTORE.md](ops/RESTORE.md)
+- **Docs:** [BRD.md](BRD.md) (requirements) · [ARCHITECTURE.md](ARCHITECTURE.md) · [GUARDRAILS.md](GUARDRAILS.md) · [plans/](plans/00-INDEX.md) · [ops/RESTORE.md](ops/RESTORE.md) · [Deploy to Azure](#9-deploy-to-azure)
 
 ---
 
@@ -117,6 +117,43 @@ backend/
   TodoApp.Api/      Controllers → Services → Data (EF Core), DTOs, Validators, Middleware
   TodoApp.Tests/    xUnit tests (services, validators, middleware)
 frontend/todo-app/  Angular app: core/ (auth, http, layout), features/ (auth, dashboard, tasks, categories, notifications), shared/
-ops/                Backup script, schedule setup, restore guide
+ops/                Backup script, schedule setup, restore guide, Azure provision/deploy scripts
 plans/              Task plan (00-INDEX.md) · reviews/ — review reports per task
 ```
+
+## 9. Deploy to Azure
+
+One App Service (Linux, .NET 10) serves the API and the Angular build from the same URL; the data is in Azure SQL Database (BRD NFR-29 to NFR-31, [ARCHITECTURE §13](ARCHITECTURE.md)).
+
+**Prerequisites:** everything in §1 except SQL Server, plus the Azure CLI and an Azure subscription.
+
+```powershell
+winget install -e --id Microsoft.AzureCLI   # once; then open a new terminal
+az login
+```
+
+**First time — create the resources** (pick a globally unique name; it becomes `https://<name>.azurewebsites.net`):
+
+```powershell
+.\ops\azure-provision.ps1 -AppName mytodoapp-<yourname>
+# Free option: App Service F1 + Azure SQL free offer (limited CPU minutes, DB auto-pauses)
+.\ops\azure-provision.ps1 -AppName mytodoapp-<yourname> -UseFreeTier
+```
+
+Defaults: resource group `rg-todoapp`, region `centralindia` (`-ResourceGroup`, `-Location` to change). The SQL admin password and the JWT key are generated and stored only in the App Service settings.
+
+**Every release — build, migrate and deploy:**
+
+```powershell
+.\ops\azure-deploy.ps1 -AppName mytodoapp-<yourname>
+```
+
+The script builds Angular and the API, opens the SQL firewall for this machine's IP only while `dotnet ef database update` runs, zip-deploys, and checks `/`, `/tasks` and `/api/v1/auth/login`.
+
+| Topic | Azure |
+|---|---|
+| Cost (approx., pay-as-you-go) | B1 + SQL Basic ≈ US$ 18/month; `-UseFreeTier` ≈ free within the free limits |
+| Logs (NFR-17) | `/home/LogFiles/todoapp-<date>.log` — `az webapp log download -g rg-todoapp -n <name>` or Kudu (`https://<name>.scm.azurewebsites.net`) |
+| Backup / restore (NFR-5a) | Automatic, 7 days point-in-time: Azure Portal → SQL database → **Restore**, or `az sql db restore` |
+| Change a setting | `az webapp config appsettings set -g rg-todoapp -n <name> --settings Jwt__ExpiryMinutes=60` |
+| Remove everything (stops all cost; deletes the data) | `az group delete -n rg-todoapp` |

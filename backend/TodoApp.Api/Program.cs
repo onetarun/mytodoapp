@@ -57,7 +57,7 @@ if (builder.Environment.IsDevelopment())
 
 var app = builder.Build();
 
-// Middleware order: exception handler → HTTPS → CORS → authentication → rate limiter → authorization → controllers.
+// Middleware order: exception handler → HTTPS → static files → CORS → authentication → rate limiter → authorization → controllers.
 // Authentication runs before the rate limiter so the default limit is partitioned per user (NFR-15).
 app.UseExceptionHandler();
 
@@ -72,11 +72,22 @@ else
 }
 
 app.UseHttpsRedirection();
+
+// Hosting (AD-6, NFR-29): the Angular build in wwwroot is served anonymously from the same origin.
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseCors(CorsExtensions.AngularClientPolicy);
 app.UseAuthentication();
 app.UseRateLimiter();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Unknown API paths stay 404; every other unmatched path is an Angular route and gets index.html.
+app.MapFallback(SpaHostingConstants.ApiFallbackPattern, () => Results.Problem(statusCode: StatusCodes.Status404NotFound))
+    .AllowAnonymous();
+app.MapFallbackToFile(SpaHostingConstants.IndexFile)
+    .AllowAnonymous();
 
 app.Run();
