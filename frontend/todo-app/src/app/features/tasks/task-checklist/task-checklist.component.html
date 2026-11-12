@@ -45,6 +45,7 @@
             <mat-checkbox
               [checked]="item.isCompleted"
               [disabled]="busyId() === item.id"
+              disabledInteractive
               [aria-label]="
                 (item.isCompleted ? 'Mark as not done: ' : 'Mark as done: ') + item.title
               "
@@ -59,6 +60,7 @@
               [attr.aria-label]="'Edit ' + item.title"
               matTooltip="Edit"
               [disabled]="busyId() === item.id"
+              disabledInteractive
               (click)="startEdit(item)"
             >
               <mat-icon>edit</mat-icon>
@@ -69,6 +71,7 @@
               [attr.aria-label]="'Delete ' + item.title"
               matTooltip="Delete"
               [disabled]="busyId() === item.id"
+              disabledInteractive
               (click)="remove(item)"
             >
               <mat-icon>delete</mat-icon>

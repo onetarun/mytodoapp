@@ -20,6 +20,8 @@
 }
 
 .overdue-item {
+  // Material menu items set their own icon color; this keeps the warning icon red.
+  --mat-menu-item-icon-color: var(--app-color-danger);
   border-left: 4px solid var(--app-color-danger);
 }
 

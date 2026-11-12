@@ -11,10 +11,14 @@
 }
 
 .app-name {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
   font: var(--mat-sys-title-large);
   color: inherit;
   text-decoration: none;
   margin-right: var(--app-space-3);
+  white-space: nowrap;
 }
 
 .app-nav {
@@ -33,7 +37,23 @@
 }
 
 .user-name {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font: var(--mat-sys-label-large);
+}
+
+.menu-user {
+  margin: 0;
+  padding: var(--app-space-2) var(--app-space-3);
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: var(--mat-sys-label-large);
+  color: var(--mat-sys-on-surface-variant);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
 }
 
 .app-content {
@@ -60,5 +80,29 @@
 
   &:focus {
     top: var(--app-space-2);
+  }
+}
+
+// NFR-20: below tablet width the header shows only the app name, the bell and the menu button.
+.narrow-only {
+  display: none;
+}
+
+@media (max-width: 767.98px) {
+  .wide-only {
+    display: none;
+  }
+
+  .narrow-only {
+    display: inline-flex;
+  }
+
+  .app-header {
+    gap: var(--app-space-1);
+    padding: 0 var(--app-space-2);
+  }
+
+  .app-content {
+    padding: var(--app-space-3);
   }
 }

@@ -1,9 +1,10 @@
-<a class="skip-link" href="#main-content">Skip to content</a>
+<a class="skip-link" href="#main-content" (click)="skipToContent($event)">Skip to content</a>
 
 <mat-toolbar class="app-header" role="banner">
   <a class="app-name" routerLink="/dashboard">Todo App</a>
 
-  <nav class="app-nav" aria-label="Main">
+  <!-- Wide screens: links in the header. Small screens: the same links in the menu below. -->
+  <nav class="app-nav wide-only" aria-label="Main">
     @for (link of navLinks; track link.path) {
       <a
         mat-button
@@ -20,12 +21,41 @@
   <app-notification-bell />
 
   @if (user(); as currentUser) {
-    <span class="user-name">{{ currentUser.name }}</span>
+    <span class="user-name wide-only" [title]="currentUser.name">{{ currentUser.name }}</span>
   }
 
-  <button mat-stroked-button type="button" (click)="logout()">Logout</button>
+  <button mat-stroked-button type="button" class="wide-only" (click)="logout()">Logout</button>
+
+  <button
+    mat-icon-button
+    type="button"
+    class="narrow-only"
+    aria-label="Main menu"
+    [matMenuTriggerFor]="mainMenu"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
 </mat-toolbar>
 
-<main id="main-content" class="app-content" tabindex="-1">
+<mat-menu #mainMenu="matMenu" xPosition="before">
+  @if (user(); as currentUser) {
+    <p class="menu-user" aria-hidden="true">{{ currentUser.name }}</p>
+  }
+  @for (link of navLinks; track link.path) {
+    <a
+      mat-menu-item
+      [routerLink]="link.path"
+      routerLinkActive="active-link"
+      ariaCurrentWhenActive="page"
+      >{{ link.label }}</a
+    >
+  }
+  <button mat-menu-item type="button" (click)="logout()">
+    <mat-icon aria-hidden="true">logout</mat-icon>
+    Logout
+  </button>
+</mat-menu>
+
+<main #mainContent id="main-content" class="app-content" tabindex="-1">
   <router-outlet />
 </main>

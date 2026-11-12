@@ -19,7 +19,9 @@ mat-form-field {
 }
 
 .inline-submit {
+  flex: none;
   margin-top: var(--app-space-2);
+  white-space: nowrap;
 }
 
 .details-row {

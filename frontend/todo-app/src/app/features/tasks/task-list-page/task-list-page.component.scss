@@ -47,6 +47,9 @@
 }
 
 .task-title {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font: var(--mat-sys-body-large);
   color: var(--mat-sys-on-surface);
   overflow-wrap: anywhere;

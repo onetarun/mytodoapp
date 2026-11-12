@@ -42,6 +42,7 @@
         <mat-checkbox
           [checked]="task.isCompleted"
           [disabled]="busyTaskId() === task.id"
+          disabledInteractive
           [aria-label]="
             (task.isCompleted ? 'Mark as pending: ' : 'Mark as complete: ') + task.title
           "
@@ -80,6 +81,7 @@
           [attr.aria-label]="'Edit ' + task.title"
           matTooltip="Edit"
           [disabled]="busyTaskId() === task.id"
+          disabledInteractive
           (click)="edit(task)"
         >
           <mat-icon>edit</mat-icon>
@@ -90,6 +92,7 @@
           [attr.aria-label]="'Delete ' + task.title"
           matTooltip="Delete"
           [disabled]="busyTaskId() === task.id"
+          disabledInteractive
           (click)="remove(task)"
         >
           <mat-icon>delete</mat-icon>
