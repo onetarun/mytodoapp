@@ -20,7 +20,7 @@
 | 11 | [Frontend: Login & Register](11-frontend-auth.md) | 10 | Frontend | ✅ Done |
 | 12 | [Frontend: Categories](12-frontend-categories.md) | 11 | Frontend | ✅ Done |
 | 13 | [Frontend: Tasks](13-frontend-tasks.md) | 12 | Frontend | ✅ Done |
-| 14 | [Frontend: SubTasks / Checklist](14-frontend-subtasks.md) | 13 | Frontend | 🔄 In progress |
+| 14 | [Frontend: SubTasks / Checklist](14-frontend-subtasks.md) | 13 | Frontend | 🟡 Awaiting merge |
 | 15 | [Frontend: Dashboard & Notification bell](15-frontend-dashboard-notifications.md) | 14 | Frontend | ☐ Not started |
 | 16 | [Responsive & accessibility polish](16-responsive-accessibility.md) | 15 | Frontend | ☐ Not started |
 | 17 | [Database backup & restore](17-database-backup.md) | 16 | Ops | ☐ Not started |
