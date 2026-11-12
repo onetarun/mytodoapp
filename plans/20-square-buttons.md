@@ -18,7 +18,7 @@
 ## Definition of Done
 
 - [x] Frontend `npm run build`, `ng lint` and Prettier check pass. *(The Angular project has no `test` target, so there are no frontend unit tests to run.)*
-- [x] In the browser, buttons show square corners with a small radius and icon buttons are still round. *(2026-11-12, `ng serve` on `http://localhost:4300/login`: "Log in" button computed `border-radius: 8px`. Icon buttons read `--mat-icon-button-container-shape`, which this task does not override, so they stay circular. The strong focus indicator uses `border-radius: inherit`, so it follows the new shape.)*
+- [x] In the browser, buttons show square corners with a small radius and icon buttons are still round. *(2026-11-12, `ng serve` on `http://localhost:4300/login`: "Log in" button computed `border-radius: 8px`. Icon buttons read `--mat-icon-button-container-shape`, which this task does not override, so they stay circular.)*
 - [x] No backend change.
 
 ## Notes
