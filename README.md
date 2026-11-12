@@ -43,11 +43,13 @@ The API refuses to start if `Jwt:Key` is missing or shorter than 32 bytes. On a 
 ## 3. Create the database
 
 ```bash
-cd backend/TodoApp.Api
+cd backend
+dotnet build
+cd TodoApp.Api
 dotnet ef database update
 ```
 
-This creates `TodoAppDb` with all tables and indexes from `Data/Migrations`. Run it again after pulling new migrations.
+`dotnet build` restores the NuGet packages first; on a fresh clone `dotnet ef` fails without it (`project.assets.json not found`). `database update` creates `TodoAppDb` with all tables and indexes from `Data/Migrations`. Run it again after pulling new migrations.
 
 ## 4. Run the app
 
