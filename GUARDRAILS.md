@@ -153,6 +153,9 @@ Ask the client and wait for an explicit "yes" **before** any of these:
 - `angular-eslint` (via `ng add angular-eslint`)
 - `prettier`, `eslint-config-prettier`
 
+### Audit tools (run with `npx`, never added to `package.json`)
+- `lighthouse` (Apache-2.0) — accessibility and performance audits in Task 16 and later
+
 *New entries are added here only after client approval (G-DEP-2).*
 
 ## Appendix B — Change Log
@@ -162,3 +165,4 @@ Ask the client and wait for an explicit "yes" **before** any of these:
 | 2026-11-11 | Initial guardrails | Client |
 | 2026-11-11 | Added `System.Security.Cryptography.Pkcs` 10.0.14 (MIT) to Appendix A as a direct pin. EF Core SqlServer 10.0.11 pulls 9.0.11 via `Microsoft.Data.SqlClient`, which has advisories GHSA-846f-f764-76mx (high) and GHSA-2fmv-rv2c-59x7 (moderate) and fails the build under warnings-as-errors (Task 02) | Client |
 | 2026-11-11 | Angular initial bundle budget warning raised from 500 kB to 650 kB (`frontend/todo-app/angular.json`; error stays 1 MB). After Task 13 the initial bundle is 502.66 kB raw / ~125 kB gzip, mainly because the Angular core chunk shared by all lazy pages counts as initial. Transfer size keeps NFR-2 (< 2 s page load) safe | Client |
+| 2026-11-12 | Added `lighthouse` (Apache-2.0) to Appendix A as an audit tool run only through `npx` (not a project dependency), for the Task 16 Lighthouse Accessibility checks. The Edge smoke test in Task 16 is done by the client | Client |
