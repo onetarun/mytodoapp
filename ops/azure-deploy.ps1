@@ -52,8 +52,10 @@ function Get-HttpStatus([string]$Url, [string]$Method = 'GET', [string]$Body = $
         if ($Body) { $params.Body = $Body; $params.ContentType = 'application/json' }
         return [int](Invoke-WebRequest @params).StatusCode
     }
-    catch [System.Net.WebException] {
-        if ($null -eq $_.Exception.Response) { throw }
+    catch {
+        # 4xx/5xx: WebException in Windows PowerShell 5.1, HttpResponseException in PowerShell 7.
+        # Both expose the status on Exception.Response; no response means a network error.
+        if (-not ($_.Exception.PSObject.Properties['Response']) -or $null -eq $_.Exception.Response) { throw }
         return [int]$_.Exception.Response.StatusCode
     }
 }
