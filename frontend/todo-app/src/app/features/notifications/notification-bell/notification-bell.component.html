@@ -1,0 +1,59 @@
+<button
+  mat-icon-button
+  type="button"
+  [matMenuTriggerFor]="menu"
+  [attr.aria-label]="ariaLabel()"
+  matTooltip="Notifications"
+>
+  <mat-icon
+    [matBadge]="count()"
+    [matBadgeHidden]="count() === 0"
+    matBadgeColor="warn"
+    matBadgeSize="small"
+    >notifications</mat-icon
+  >
+</button>
+
+<mat-menu #menu="matMenu" xPosition="before">
+  @if (count() === 0) {
+    <button mat-menu-item type="button" disabled>You're all caught up</button>
+  } @else {
+    @if (overdue().length > 0) {
+      <div class="group-heading overdue-heading" aria-hidden="true">
+        <mat-icon>warning</mat-icon>
+        Overdue
+      </div>
+      @for (item of overdue(); track item.taskId) {
+        <a mat-menu-item class="overdue-item" [routerLink]="['/tasks', item.taskId]">
+          <mat-icon class="overdue-icon" aria-hidden="true">warning</mat-icon>
+          <span class="item-text">
+            <span class="item-title">{{ item.title }}</span>
+            <span class="item-due"
+              ><span class="visually-hidden">Overdue, was due </span
+              >{{ item.dueDate | date: 'short' }}</span
+            >
+          </span>
+        </a>
+      }
+    }
+
+    @if (dueSoon().length > 0) {
+      <div class="group-heading" aria-hidden="true">
+        <mat-icon>schedule</mat-icon>
+        Due within 24 hours
+      </div>
+      @for (item of dueSoon(); track item.taskId) {
+        <a mat-menu-item [routerLink]="['/tasks', item.taskId]">
+          <mat-icon aria-hidden="true">schedule</mat-icon>
+          <span class="item-text">
+            <span class="item-title">{{ item.title }}</span>
+            <span class="item-due"
+              ><span class="visually-hidden">Due within 24 hours, due </span
+              >{{ item.dueDate | date: 'short' }}</span
+            >
+          </span>
+        </a>
+      }
+    }
+  }
+</mat-menu>

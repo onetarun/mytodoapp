@@ -17,10 +17,7 @@
 
   <span class="spacer"></span>
 
-  <!-- Notification bell: wired to the API in Task 15. -->
-  <button mat-icon-button type="button" aria-label="Notifications" disabled>
-    <mat-icon>notifications</mat-icon>
-  </button>
+  <app-notification-bell />
 
   @if (user(); as currentUser) {
     <span class="user-name">{{ currentUser.name }}</span>
