@@ -1,8 +1,8 @@
 # Business Requirements Document (BRD) — Todo Application
 
-**Version:** 1.3 (Azure hosting added — NFR-29 to NFR-31)
+**Version:** 1.4 (button shape added — NFR-22a)
 **Date:** 2026-11-12
-**Status:** v1 approved 2026-11-12; v1.3 hosting scope approved by the client on 2026-11-12
+**Status:** v1 approved 2026-11-12; v1.3 hosting scope approved by the client on 2026-11-12; v1.4 button shape (GitHub issue #1) approved by the client on 2026-11-12
 
 ---
 
@@ -114,6 +114,7 @@ A **simple, fast task-tracking web application for individual users**. A user ca
 - **NFR-20:** **Responsive** from 360 px (mobile) to 1920 px (desktop).
 - **NFR-21:** A task can be added in 2 clicks or fewer from the main screen.
 - **NFR-22:** UI language is **English only**.
+- **NFR-22a:** Text buttons (text, filled, outlined) are **rectangles with rounded corners (8 px radius)**, not pill/oval shapes. Icon-only buttons stay circular. Set once globally in `styles.scss` (GitHub issue #1).
 
 ### 5.7 Accessibility
 - **NFR-23:** **Basic accessibility:** full keyboard navigation, labels on all form fields, sufficient color contrast, and visible focus states.
