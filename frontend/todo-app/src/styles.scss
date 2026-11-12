@@ -51,6 +51,14 @@ body {
 }
 
 // Visible keyboard focus everywhere (NFR accessibility, ARCHITECTURE §10).
+// Material buttons, menus and checkboxes hide the browser outline, so turn on their strong focus ring.
+@include mat.strong-focus-indicators(
+  (
+    border-color: var(--mat-sys-primary),
+    border-width: 2px,
+  )
+);
+
 :focus-visible {
   outline: 2px solid var(--mat-sys-primary);
   outline-offset: 2px;

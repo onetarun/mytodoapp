@@ -80,6 +80,7 @@
             [attr.aria-label]="'Rename ' + category.name"
             matTooltip="Rename"
             [disabled]="busy()"
+            disabledInteractive
             (click)="startEdit(category)"
           >
             <mat-icon>edit</mat-icon>
@@ -92,6 +93,7 @@
             [attr.aria-label]="'Delete ' + category.name"
             matTooltip="Delete"
             [disabled]="busy()"
+            disabledInteractive
             (click)="remove(category)"
           >
             <mat-icon>delete</mat-icon>

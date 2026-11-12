@@ -1,4 +1,4 @@
-<a class="skip-link" href="#main-content">Skip to content</a>
+<a class="skip-link" href="#main-content" (click)="skipToContent($event)">Skip to content</a>
 
 <mat-toolbar class="app-header" role="banner">
   <a class="app-name" routerLink="/dashboard">Todo App</a>
@@ -56,6 +56,6 @@
   </button>
 </mat-menu>
 
-<main id="main-content" class="app-content" tabindex="-1">
+<main #mainContent id="main-content" class="app-content" tabindex="-1">
   <router-outlet />
 </main>
