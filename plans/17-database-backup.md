@@ -17,7 +17,7 @@
   - [x] runs `sqlcmd -S <instance> -E -Q "BACKUP DATABASE [TodoAppDb] TO DISK = N'<folder>\TodoAppDb_<yyyyMMdd_HHmm>.bak' WITH INIT, CHECKSUM"`;
   - [x] verifies the file with `RESTORE VERIFYONLY`;
   - [x] deletes `.bak` files **older than 7 days**; *(only `TodoAppDb_*.bak` in the backup folder, and only after a verified backup)*
-  - [x] writes a line to `ops/backup.log` (success or failure). *(Log next to the script: `ops/backup.log` for manual runs, `C:\Backups\TodoAppDbbackup.log` for the scheduled copy — see Notes.)*
+  - [x] writes a line to `ops/backup.log` (success or failure). *(Log next to the script: `ops/backup.log` for manual runs, `C:\Backups\TodoAppDb\backup.log` for the scheduled copy — see Notes.)*
 - [x] Create a Task Scheduler task: daily at a fixed time (e.g. 02:00), "run whether user is logged on or not", run if missed. *("TodoAppDb daily backup": daily 02:00, LogonType Password, StartWhenAvailable True, 1 h limit; registered by the client with `ops/setup-backup-schedule.ps1`.)*
 
 ### Option B — SQL Server Agent
@@ -37,6 +37,6 @@
 
 ## Notes
 
-- Method used: `Task Scheduler` (SQL Server Express) — task "TodoAppDb daily backup", daily 02:00, runs `C:\Backups\TodoAppDbbackup-todoapp.ps1` (a copy installed by `ops/setup-backup-schedule.ps1`, so the schedule does not depend on a git checkout; re-run the setup after changing the script). Its log is `C:\Backups\TodoAppDbbackup.log`.
+- Method used: `Task Scheduler` (SQL Server Express) — task "TodoAppDb daily backup", daily 02:00, runs `C:\Backups\TodoAppDb\backup-todoapp.ps1` (a copy installed by `ops/setup-backup-schedule.ps1`, so the schedule does not depend on a git checkout; re-run the setup after changing the script). Its log is `C:\Backups\TodoAppDb\backup.log`.
 - Backup folder: `C:\Backups\TodoAppDb`
 - Test restore done on: `2026-11-12`
