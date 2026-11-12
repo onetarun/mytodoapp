@@ -1,9 +1,9 @@
 # Review — Task 19: Azure Deployment
 
-**Date:** 2026-11-12 · **Branch:** task/19-azure-deployment · **Verdict:** ❌ FAIL
+**Date:** 2026-11-12 · **Branch:** task/19-azure-deployment · **Verdict:** ✅ PASS for everything Claude can verify. ⚠️ One client action is open: the first real deploy to Azure.
 
 ## Summary
-The scope change is documented first (BRD v1.3, ARCHITECTURE AD-6), the API serves the Angular build with a correct SPA fallback, and the local production-mode run works end to end. One defect blocks the PASS: the deploy script's smoke check only handles the Windows PowerShell 5.1 exception type, while `azure-common.ps1` says the scripts support "5.1+".
+The scope change is documented first (BRD v1.3, ARCHITECTURE AD-6). The API serves the Angular build with a correct SPA fallback, and the local production-mode run works end to end. The run-1 issue (smoke check failing on PowerShell 7) is fixed in `1ecc9e2`. The scripts' `az` steps can only be proven on the client's subscription.
 
 ## Automated checks
 | Check | Command | Result |
@@ -11,11 +11,12 @@ The scope change is documented first (BRD v1.3, ARCHITECTURE AD-6), the API serv
 | Build, zero warnings | `dotnet build --no-incremental` | ✅ 0 Warning(s), 0 Error(s) |
 | Nullable + warnings-as-errors | inspect `*.csproj` | ✅ unchanged, both projects set |
 | Format | `dotnet format --verify-no-changes` | ✅ exit 0 |
-| Tests | `dotnet test` | ✅ 137 passed, 0 failed, 0 skipped |
+| Tests | `dotnet test` | ✅ 137 passed, 0 failed, 0 skipped (run 2) |
 | Coverage | `dotnet test --collect:"XPlat Code Coverage"` (Services classes) | ✅ 802/802 lines = 100% |
 | Frontend lint / Prettier / build | `npm run lint`, `npm run format:check`, `npm run build` | ✅ all pass (frontend files unchanged in this task) |
 | Strict mode | `tsconfig.json` | ✅ unchanged |
-| PowerShell parse | `[Parser]::ParseFile` on the 3 scripts | ✅ 0 errors |
+| PowerShell parse | `[Parser]::ParseFile` on the 3 scripts | ✅ 0 errors (run 2) |
+| Smoke-check function | `Get-HttpStatus` loaded from `azure-deploy.ps1`, against the local production run (Windows PowerShell 5.1) | ✅ `/` 200, `/tasks` 200, login `{}` 400, `/api/v1/nope` 404; a closed port rethrows the network error |
 | Local production run | published output + `wwwroot`, `ASPNETCORE_ENVIRONMENT=Production` | ✅ `/` 200, `/tasks` 200, `/api/v1/nope` 404 ProblemDetails, no-token API 401, register 201, login + categories 200, browser login → `/tasks` |
 
 ## Definition of Done
@@ -53,9 +54,10 @@ The scope change is documented first (BRD v1.3, ARCHITECTURE AD-6), the API serv
 | G-DESTRUCT-1..4 | ✅ | Nothing dropped or deleted. `TodoAppDb_DeployTest` was created and left in place |
 
 ## Issues to fix (FAIL only)
-1. `ops/azure-deploy.ps1:55` — `Get-HttpStatus` catches only `System.Net.WebException`. In PowerShell 7 (`pwsh`), `Invoke-WebRequest` throws `HttpResponseException` for 4xx, so the expected `400` from `POST /api/v1/auth/login {}` aborts the deploy with an error after a successful zip deploy. `azure-common.ps1:1` states "Windows PowerShell 5.1+". — correctness of the DoD "smoke check" step.
+None. Run 1 issue fixed: `ops/azure-deploy.ps1:55` now catches any exception and reads `Exception.Response.StatusCode` (WebException in 5.1, HttpResponseException in 7), rethrowing when there is no response.
 
 ## Not verified
+- Running the scripts under PowerShell 7 — `pwsh` is not installed on this machine. The code path uses only the `Response.StatusCode` property both versions provide.
 - The `az` commands against a real subscription — Azure CLI is not installed here and the subscription belongs to the client.
 - The `ASPNETCORE_FORWARDEDHEADERS_ENABLED` effect on App Service (HTTPS redirect, per-IP login limit) — needs the real App Service front end.
 
@@ -71,3 +73,4 @@ The scope change is documented first (BRD v1.3, ARCHITECTURE AD-6), the API serv
 | Run | Date | Verdict |
 |---|---|---|
 | 1 | 2026-11-12 | ❌ FAIL (PowerShell 7 smoke-check exception) |
+| 2 | 2026-11-12 | ✅ PASS (client deploy to Azure open) |

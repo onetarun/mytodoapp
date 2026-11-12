@@ -25,7 +25,7 @@
 | 16 | [Responsive & accessibility polish](16-responsive-accessibility.md) | 15 | Frontend | ✅ Done |
 | 17 | [Database backup & restore](17-database-backup.md) | 16 | Ops | ✅ Done |
 | 18 | [Final QA & BRD acceptance](18-final-qa-acceptance.md) | 17 | QA | ✅ Done |
-| 19 | [Azure deployment](19-azure-deployment.md) (BRD v1.3) | 18 | Ops | 🔄 In progress |
+| 19 | [Azure deployment](19-azure-deployment.md) (BRD v1.3) | 18 | Ops | 🟡 Awaiting merge |
 
 ## Dependency Chain
 
