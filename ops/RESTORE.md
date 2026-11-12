@@ -115,4 +115,4 @@ sqlcmd -S .\SQLEXPRESS -E -C -Q "DROP DATABASE [TodoAppDb_RestoreTest]"
 
 | Date | Backup file | Result |
 |---|---|---|
-| _(filled in by Task 17)_ | | |
+| 2026-11-12 | `TodoAppDb_20261112_0841.bak` (made by the scheduled task) | ✅ Restored as `TodoAppDb_RestoreTest` with `CHECKSUM` (874 pages, 0.036 s). Row counts equal to `TodoAppDb`: AspNetUsers 21, Categories 45, TodoTasks 3,024, SubTasks 10, __EFMigrationsHistory 1. Test copy dropped afterwards. |

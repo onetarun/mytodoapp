@@ -22,10 +22,15 @@ param(
     [string]$BackupFolder = 'C:\Backups\TodoAppDb',
     [ValidateRange(1, 365)]
     [int]$RetentionDays = 7,
-    [string]$LogFile = (Join-Path $PSScriptRoot 'backup.log')
+    # Default: backup.log next to this script. Set below, because Windows PowerShell 5.1 leaves
+    # $PSScriptRoot empty inside param() defaults when the script is started with -File.
+    [string]$LogFile = ''
 )
 
 $ErrorActionPreference = 'Stop'
+if ([string]::IsNullOrWhiteSpace($LogFile)) {
+    $LogFile = Join-Path $PSScriptRoot 'backup.log'
+}
 
 function Write-BackupLog([string]$Status, [string]$Message) {
     $line = '{0} {1} {2}' -f (Get-Date -Format 'yyyy-MM-ddTHH:mm:ssK'), $Status, $Message
