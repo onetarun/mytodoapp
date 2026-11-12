@@ -19,10 +19,11 @@ import { ApiError } from '../../../core/http/api-error';
 import { TaskDetail } from '../../../core/models/task-detail';
 import { ToastService } from '../../../core/ui/toast.service';
 import { PriorityBadgeComponent } from '../../../shared/priority-badge/priority-badge.component';
+import { TaskChecklistComponent } from '../task-checklist/task-checklist.component';
 import { TaskEditDialogService } from '../task-edit-dialog/task-edit-dialog.service';
 import { TaskService } from '../task.service';
 
-/** Shows every field of one task with an Edit button; `404` shows "Task not found" (FR-7, FR-10). */
+/** Shows every field of one task, an Edit button and the checklist; `404` shows "Task not found" (FR-7, FR-10, FR-11). */
 @Component({
   selector: 'app-task-detail-page',
   imports: [
@@ -32,6 +33,7 @@ import { TaskService } from '../task.service';
     MatProgressSpinnerModule,
     PriorityBadgeComponent,
     RouterLink,
+    TaskChecklistComponent,
   ],
   templateUrl: './task-detail-page.component.html',
   styleUrl: './task-detail-page.component.scss',
