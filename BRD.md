@@ -1,8 +1,8 @@
 # Business Requirements Document (BRD) — Todo Application
 
-**Version:** 1.2 (Draft for client review — detailed NFRs added)
-**Date:** 2026-11-11
-**Status:** Awaiting client approval
+**Version:** 1.3 (Azure hosting added — NFR-29 to NFR-31)
+**Date:** 2026-11-12
+**Status:** v1 approved 2026-11-12; v1.3 hosting scope approved by the client on 2026-11-12
 
 ---
 
@@ -25,7 +25,8 @@ A **simple, fast task-tracking web application for individual users**. A user ca
 | Frontend | Angular (SPA) |
 | Backend | ASP.NET Core Web API |
 | ORM | Entity Framework Core |
-| Database | SQL Server (local instance) |
+| Database | SQL Server (local instance for development); Azure SQL Database in Azure |
+| Hosting | Microsoft Azure: App Service (Linux) for the API and the Angular build, Azure SQL Database (NFR-29) |
 | Authentication | JWT token-based, with hashed passwords |
 | Platform | Web (desktop and mobile browsers, responsive) |
 
@@ -84,6 +85,7 @@ A **simple, fast task-tracking web application for individual users**. A user ca
 ### 5.3 Availability, Backup & Data Retention
 - **NFR-5:** **Daily automatic SQL Server backup** (SQL Server Agent job or scheduled script). The last **7 days** of backups are kept.
 - **NFR-6:** Restore from backup is documented and tested at least once.
+- **NFR-5a:** In Azure, NFR-5 is met by Azure SQL Database automated backups with **7 days** of point-in-time restore. The local Task Scheduler backup (Task 17) stays for the local database.
 - **NFR-7:** **Soft delete:** deleting a task, subtask or category sets `IsDeleted = true` and `DeletedAt`. The data is hidden from users but stays in the DB. This is applied through an EF Core global query filter. There is no Trash/restore UI in v1.
 
 ### 5.4 Security
@@ -100,6 +102,12 @@ A **simple, fast task-tracking web application for individual users**. A user ca
 ### 5.5 Logging & Monitoring
 - **NFR-17:** **Error logging to file** using Serilog, with rolling daily log files kept for 30 days.
 - **NFR-18:** Users see friendly error messages. Stack traces and internal details are never exposed in API responses.
+
+### 5.5a Hosting & Deployment (Azure)
+- **NFR-29:** The app is hosted on **Azure App Service (Linux, .NET 10)**. The Angular production build is served by the API from the same URL (`https://<app>.azurewebsites.net`), so the browser calls `/api/v1` on the same origin.
+- **NFR-30:** The database is **Azure SQL Database**. Schema changes are applied with the existing EF Core migrations during deployment.
+- **NFR-31:** Secrets (SQL connection string, JWT key) live only in App Service application settings, never in git. HTTPS-only is on, and logs are written to the App Service `/home/LogFiles` folder (NFR-17).
+- Deployment is a manual script run by the client after `az login` (no CI/CD in v1; GitHub Actions is Phase 2).
 
 ### 5.6 Usability & UI
 - **NFR-19:** Minimal and clean list-based design.
@@ -156,11 +164,12 @@ A **simple, fast task-tracking web application for individual users**. A user ca
 - Kanban board view
 - Team sharing and task assignment
 - Native mobile apps
+- CI/CD auto-deploy to Azure (GitHub Actions), custom domain
 
 ## 9. Assumptions & Open Points
 
 1. SQL Server runs locally (Express or Developer edition is fine).
-2. The app runs on a local machine for now. Hosting and deployment will be decided later.
+2. **Resolved (v1.3):** Development runs on a local machine; production hosting is Microsoft Azure (NFR-29 to NFR-31). The Azure subscription and its cost are owned by the client.
 3. Times are stored in UTC and shown in the user's local time zone.
 4. **Resolved:** The client approved adding a basic Status filter (All / Pending / Completed) to the MVP (see FR-10a).
 5. Category deletion is a soft delete. Its tasks are moved to "Uncategorized" as per FR-16.
