@@ -23,7 +23,7 @@
 | 14 | [Frontend: SubTasks / Checklist](14-frontend-subtasks.md) | 13 | Frontend | ✅ Done |
 | 15 | [Frontend: Dashboard & Notification bell](15-frontend-dashboard-notifications.md) | 14 | Frontend | ✅ Done |
 | 16 | [Responsive & accessibility polish](16-responsive-accessibility.md) | 15 | Frontend | ✅ Done |
-| 17 | [Database backup & restore](17-database-backup.md) | 16 | Ops | 🟡 Awaiting merge |
+| 17 | [Database backup & restore](17-database-backup.md) | 16 | Ops | ✅ Done |
 | 18 | [Final QA & BRD acceptance](18-final-qa-acceptance.md) | 17 | QA | ☐ Not started |
 
 ## Dependency Chain
